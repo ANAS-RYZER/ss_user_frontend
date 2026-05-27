@@ -9,7 +9,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12 md:mb-16">
           {/* Brand */}
           <div>
-            <h3 className="text-xl font-light tracking-widest mb-4">SAMBAVI</h3>
+            <h3 className="text-xl font-light tracking-widest mb-4">SHARNAYA</h3>
             <p className="text-sm font-light leading-relaxed text-background/80">
               Celebrating South Indian heritage through timeless traditional wear.
             </p>
@@ -84,7 +84,7 @@ export function Footer() {
 
         <div className="border-t border-background/20 pt-8">
           <p className="text-xs font-light text-center text-background/70">
-            © 2024 Sambavi Traditional Fashion. All rights reserved.
+            © 2024 SHARNAYA Traditional Fashion. All rights reserved.
           </p>
         </div>
       </div>

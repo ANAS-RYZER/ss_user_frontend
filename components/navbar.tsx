@@ -13,7 +13,7 @@ export function Navbar() {
         <div className="flex items-center justify-between mb-6">
           {/* Logo */}
           <Link href="/" className="text-xl font-light tracking-widest text-foreground">
-            SAMBAVI
+            SHARNAYA
           </Link>
 
           {/* Right icons - always visible */}

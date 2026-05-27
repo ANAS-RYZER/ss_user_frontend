@@ -7,10 +7,10 @@ const products = [
   {
     id: '1',
     name: 'Pure Silk Kanjeevaram Saree',
-    designer: 'Sambavi Creations',
+    designer: 'SHARNAYA Creations',
     price: 18500,
     image:
-      'https://images.unsplash.com/photo-1605777695826-4a4d8d5e4d5c?w=500&h=600&fit=crop',
+      'bb1.webp',
     category: 'saree',
   },
   {
@@ -19,34 +19,34 @@ const products = [
     designer: 'Heritage Collection',
     price: 21000,
     image:
-      'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=500&h=600&fit=crop',
+      'bb3.webp',
     category: 'saree',
   },
   {
     id: '3',
     name: 'Traditional Gold Border Saree',
-    designer: 'Sambavi Creations',
+    designer: 'SHARNAYA Creations',
     price: 16500,
     image:
-      'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=500&h=600&fit=crop',
+      'bb2.webp',
     category: 'saree',
   },
   {
     id: '4',
-    name: 'Silk Pattu Kids Lehenga',
+    name: 'Mustard Readymade Cotton Pavadai Set',
     designer: 'Heritage Collection',
     price: 8500,
     image:
-      'https://images.unsplash.com/photo-1588710227913-d9ad21c4d6c6?w=500&h=600&fit=crop',
+      'bb4.webp',
     category: 'kids',
   },
   {
     id: '5',
     name: 'Kids Traditional Saree',
-    designer: 'Sambavi Creations',
+    designer: 'SHARNAYA Creations',
     price: 7500,
     image:
-      'https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=500&h=600&fit=crop',
+      'bb5.avif',
     category: 'kids',
   },
   {
@@ -55,7 +55,7 @@ const products = [
     designer: 'Heritage Collection',
     price: 9200,
     image:
-      'https://images.unsplash.com/photo-1577804661236-e3c942f3e313?w=500&h=600&fit=crop',
+      'bb6.avif',
     category: 'kids',
   },
 ];
