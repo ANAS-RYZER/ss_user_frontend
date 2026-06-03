@@ -14,14 +14,14 @@ import {
   Star,
 } from 'lucide-react';
 import type { Product } from '@/lib/products/types';
-import { AUDIENCE_LABELS, DEFAULT_SIZES } from '@/lib/products/types';
+import { AUDIENCE_LABELS } from '@/lib/products/types';
 import {
   colorToSwatch,
   getDiscountPercent,
   getGalleryImages,
   getProductMrp,
 } from '@/lib/products/helpers';
-import { formatProductPrice } from '@/lib/products/normalize';
+import { formatProductPrice, getProductSizes } from '@/lib/products/normalize';
 import { MediaImage } from '@/components/media-image';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -43,7 +43,8 @@ export function ProductDetailPanel({
   const [selectedColor, setSelectedColor] = useState(product.colors[0] ?? '');
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
 
-  const sizes = product.sizes ?? DEFAULT_SIZES;
+  const sizes = getProductSizes(product);
+  const hasApiSizes = Boolean(product.sizes?.length);
   const mrp = getProductMrp(product);
   const discount = getDiscountPercent(product);
   const visibleThumbs = 4;
@@ -54,6 +55,8 @@ export function ProductDetailPanel({
   const goNextImage = () => setActiveImage(i => (i === gallery.length - 1 ? 0 : i + 1));
 
   const audienceLabel = AUDIENCE_LABELS[product.audience];
+  console.log(product);
+  
 
   return (
     <div className="flex flex-col gap-6">
@@ -282,7 +285,7 @@ export function ProductDetailPanel({
                   disabled={!size.available}
                   onClick={() => size.available && setSelectedSize(size.label)}
                   className={cn(
-                    'tap-target flex min-w-12 items-center justify-center rounded-md border-2 px-4 py-3 text-lg font-bold',
+                    'tap-target flex min-w-12 items-center justify-center rounded-md border-2 px-4 py-3 text-lg font-bold uppercase',
                     !size.available &&
                       'cursor-not-allowed border-border text-muted-foreground/50 line-through',
                     size.available &&
@@ -297,6 +300,11 @@ export function ProductDetailPanel({
                 </button>
               ))}
             </div>
+            {!hasApiSizes && (
+              <p className="mt-2 text-sm text-muted-foreground">
+                Standard sizes shown — confirm availability when ordering.
+              </p>
+            )}
           </div>
 
           <div className="mt-5 flex items-start gap-3 rounded-md border-2 border-amber-300 bg-amber-50 px-4 py-4 text-base font-medium text-amber-950">

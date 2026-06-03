@@ -6,7 +6,7 @@ import { ChevronLeft, ChevronRight, ShoppingBag } from 'lucide-react';
 import type { Product } from '@/lib/products/types';
 import { DEFAULT_SIZES } from '@/lib/products/types';
 import { colorToSwatch, getGalleryImages } from '@/lib/products/helpers';
-import { formatProductPrice } from '@/lib/products/normalize';
+import { formatProductPrice, getProductSizes } from '@/lib/products/normalize';
 import { MediaImage } from '@/components/media-image';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -21,7 +21,7 @@ export function ProductQuickViewPanel({ product }: ProductQuickViewPanelProps) {
   const [activeImage, setActiveImage] = useState(0);
   const [selectedColor, setSelectedColor] = useState(product.colors[0] ?? '');
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
-  const sizes = product.sizes ?? DEFAULT_SIZES;
+  const sizes = getProductSizes(product);
 
   const goPrev = () => setActiveImage(i => (i === 0 ? gallery.length - 1 : i - 1));
   const goNext = () => setActiveImage(i => (i === gallery.length - 1 ? 0 : i + 1));

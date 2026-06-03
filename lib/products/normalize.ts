@@ -1,4 +1,44 @@
-import type { AudienceCategory, Product } from '@/lib/products/types';
+import type { AudienceCategory, Product, ProductSize } from '@/lib/products/types';
+import { DEFAULT_SIZES } from '@/lib/products/types';
+
+function formatSizeLabel(value: string): string {
+  const trimmed = value.trim();
+  if (!trimmed) return trimmed;
+  if (trimmed.length <= 3) return trimmed.toUpperCase();
+  return trimmed.charAt(0).toUpperCase() + trimmed.slice(1).toLowerCase();
+}
+
+function parseSizes(raw: unknown): ProductSize[] | undefined {
+  if (!Array.isArray(raw) || raw.length === 0) return undefined;
+
+  const parsed = raw
+    .map(item => {
+      if (typeof item === 'string') {
+        const label = formatSizeLabel(item);
+        return label ? { label, available: true } : null;
+      }
+      if (item && typeof item === 'object') {
+        const obj = item as Record<string, unknown>;
+        const label = formatSizeLabel(
+          String(obj.label ?? obj.size ?? obj.name ?? obj.value ?? ''),
+        );
+        if (!label) return null;
+        return {
+          label,
+          available: obj.available !== false && obj.isAvailable !== false,
+        };
+      }
+      return null;
+    })
+    .filter((s): s is ProductSize => s !== null);
+
+  return parsed.length > 0 ? parsed : undefined;
+}
+
+/** Sizes from API, or default picker when none provided */
+export function getProductSizes(product: Product): ProductSize[] {
+  return product.sizes?.length ? product.sizes : DEFAULT_SIZES;
+}
 
 function parseImages(raw: unknown): string[] {
   if (!Array.isArray(raw)) return [];
@@ -35,9 +75,13 @@ function parsePrice(raw: Record<string, unknown>): number {
 
 function parseAudience(raw: Record<string, unknown>): AudienceCategory {
   const value = String(raw.audience ?? raw.gender ?? raw.targetAudience ?? '').toLowerCase();
+  const category = String(raw.category ?? '').toLowerCase();
   if (value === 'men' || value === 'man' || value === 'mens') return 'men';
   if (value === 'children' || value === 'kids' || value === 'child') return 'children';
   if (value === 'women' || value === 'woman' || value === 'womens') return 'women';
+  if (category === 'mens' || category === 'men') return 'men';
+  if (category === 'kids' || category === 'children') return 'children';
+  if (category === 'womens' || category === 'women') return 'women';
   return 'women';
 }
 
@@ -64,9 +108,7 @@ export function normalizeProduct(raw: Record<string, unknown>): Product {
     reviewCount: raw.reviewCount != null ? Number(raw.reviewCount) : undefined,
     bestseller: Boolean(raw.bestseller ?? raw.isFeatured),
     modelNote: raw.modelNote ? String(raw.modelNote) : undefined,
-    sizes: Array.isArray(raw.sizes)
-      ? (raw.sizes as { label: string; available: boolean }[])
-      : undefined,
+    sizes: parseSizes(raw.sizes),
     certifications: Array.isArray(raw.certifications) ? raw.certifications.map(String) : [],
     tags: Array.isArray(raw.tags) ? raw.tags.map(String) : [],
     seoKeywords: Array.isArray(raw.seoKeywords)
