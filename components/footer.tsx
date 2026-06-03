@@ -1,91 +1,84 @@
-'use client';
-
 import Link from 'next/link';
+import { Instagram, Mail, Phone } from 'lucide-react';
+import { LogoLink } from '@/components/logo';
+
+const footerLinks = {
+  Collections: ['Women', 'Men', 'Children'],
+  'Customer care': ['Contact us', 'Returns', 'Shipping information'],
+  Information: ['About us', 'Privacy policy', 'Terms of service'],
+};
 
 export function Footer() {
   return (
-    <footer className="bg-foreground text-background py-16 md:py-20">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12 md:mb-16">
-          {/* Brand */}
-          <div>
-            <h3 className="text-xl font-light tracking-widest mb-4">SHARNAYA</h3>
-            <p className="text-sm font-light leading-relaxed text-background/80">
-              Celebrating South Indian heritage through timeless traditional wear.
+    <footer className="bg-foreground text-primary-foreground">
+      <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-5">
+          <div className="lg:col-span-2">
+            <LogoLink
+              href="/"
+              height={80}
+              className="rounded-md bg-primary-foreground p-3"
+            />
+            <p className="mt-5 max-w-md text-lg leading-relaxed text-primary-foreground/90">
+              Traditional South Indian sarees and festive wear for the whole family.
             </p>
+            <a
+              href="tel:+919000000000"
+              className="tap-target mt-5 inline-flex items-center gap-2 text-lg font-semibold underline-offset-2 hover:underline"
+            >
+              <Phone size={22} aria-hidden />
+              Call for orders & help
+            </a>
+            <div className="mt-6 flex gap-4">
+              <a
+                href="#"
+                className="tap-target flex size-12 items-center justify-center rounded-md border-2 border-primary-foreground/30 hover:bg-primary-foreground/10"
+                aria-label="Instagram"
+              >
+                <Instagram size={24} strokeWidth={1.75} />
+              </a>
+              <a
+                href="mailto:hello@sharnaya.com"
+                className="tap-target flex size-12 items-center justify-center rounded-md border-2 border-primary-foreground/30 hover:bg-primary-foreground/10"
+                aria-label="Email us"
+              >
+                <Mail size={24} strokeWidth={1.75} />
+              </a>
+            </div>
           </div>
 
-          {/* Collections */}
-          <div>
-            <h4 className="text-sm font-light tracking-widest uppercase mb-4">Collections</h4>
-            <ul className="space-y-3">
-              <li>
-                <Link href="#" className="text-sm font-light hover:opacity-60 transition-opacity">
-                  Sarees
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="text-sm font-light hover:opacity-60 transition-opacity">
-                  Kids Wear
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="text-sm font-light hover:opacity-60 transition-opacity">
-                  Seasonal
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Customer Care */}
-          <div>
-            <h4 className="text-sm font-light tracking-widest uppercase mb-4">Customer Care</h4>
-            <ul className="space-y-3">
-              <li>
-                <Link href="#" className="text-sm font-light hover:opacity-60 transition-opacity">
-                  Contact Us
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="text-sm font-light hover:opacity-60 transition-opacity">
-                  Returns
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="text-sm font-light hover:opacity-60 transition-opacity">
-                  Shipping Info
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Information */}
-          <div>
-            <h4 className="text-sm font-light tracking-widest uppercase mb-4">Information</h4>
-            <ul className="space-y-3">
-              <li>
-                <Link href="#" className="text-sm font-light hover:opacity-60 transition-opacity">
-                  About Us
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="text-sm font-light hover:opacity-60 transition-opacity">
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="text-sm font-light hover:opacity-60 transition-opacity">
-                  Terms of Service
-                </Link>
-              </li>
-            </ul>
-          </div>
+          {Object.entries(footerLinks).map(([title, links]) => (
+            <div key={title}>
+              <h4 className="mb-4 text-lg font-bold text-primary-foreground">{title}</h4>
+              <ul className="space-y-3">
+                {links.map(link => (
+                  <li key={link}>
+                    <Link
+                      href={
+                        title === 'Collections'
+                          ? link === 'Women'
+                            ? '/products?audience=women'
+                            : link === 'Men'
+                              ? '/products?audience=men'
+                              : link === 'Children'
+                                ? '/products?audience=children'
+                                : '/products'
+                          : '#'
+                      }
+                      className="text-lg text-primary-foreground/90 underline-offset-2 hover:text-primary-foreground hover:underline"
+                    >
+                      {link}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
 
-        <div className="border-t border-background/20 pt-8">
-          <p className="text-xs font-light text-center text-background/70">
-            © 2024 SHARNAYA Traditional Fashion. All rights reserved.
-          </p>
+        <div className="mt-12 border-t-2 border-primary-foreground/20 pt-8 text-center text-base text-primary-foreground/75">
+          <p>© {new Date().getFullYear()} SHARNAYA Traditional Fashion. All rights reserved.</p>
+          <p className="mt-2">Crafted with care in Tamil Nadu, India</p>
         </div>
       </div>
     </footer>

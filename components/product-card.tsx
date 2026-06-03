@@ -1,59 +1,75 @@
 'use client';
 
-import Image from 'next/image';
-import { useState } from 'react';
+import Link from 'next/link';
+import { useProductQuickView } from '@/contexts/product-quick-view-context';
+import type { Product } from '@/lib/products/types';
+import { formatProductPrice } from '@/lib/products/normalize';
+import { MediaImage } from '@/components/media-image';
 
 interface ProductCardProps {
-  id: string;
-  name: string;
-  designer: string;
-  price: number;
-  image: string;
-  category: string;
+  product: Product;
 }
 
-export function ProductCard({ id, name, designer, price, image, category }: ProductCardProps) {
-  const [isHovered, setIsHovered] = useState(false);
+export function ProductCard({ product }: ProductCardProps) {
+  const { openQuickView } = useProductQuickView();
+  const primaryImage = product.images[0] ?? '/placeholder.jpg';
 
   return (
-    <div className="group">
-      <div
-        className="relative overflow-hidden rounded-lg mb-6 bg-muted aspect-square"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
+    <article className="flex flex-col overflow-hidden rounded-md border-2 border-border bg-card shadow-sm">
+      <Link
+        href={`/products/${product.id}`}
+        className="relative block aspect-[3/4] overflow-hidden bg-muted"
       >
-        <Image
-          src={image}
-          alt={name}
-          fill
-          className={`object-cover transition-transform duration-500 ${
-            isHovered ? 'scale-105' : 'scale-100'
-          }`}
+        <MediaImage
+          src={primaryImage}
+          alt={product.name}
+          filename={product.imageFilename}
+          placeholderLabel="Product photo"
+          sizes="(max-width: 768px) 100vw, 50vw"
+          imageClassName="object-cover object-top"
         />
-        {isHovered && (
-          <div className="absolute inset-0 bg-black/5 transition-opacity duration-300"></div>
+        {(product.status.featured || product.bestseller) && (
+          <span className="absolute top-3 left-3 rounded-md bg-primary px-3 py-1.5 text-sm font-bold text-primary-foreground">
+            Featured
+          </span>
         )}
-        <div className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 ${
-          isHovered ? 'opacity-100' : 'opacity-0'
-        }`}>
-          <button className="px-8 py-2 bg-background text-foreground font-light text-sm tracking-widest uppercase border border-foreground hover:bg-foreground hover:text-background transition-all duration-300">
-            View
+        {!product.status.featured && product.category && (
+          <span className="absolute top-3 left-3 rounded-md bg-background px-3 py-1.5 text-sm font-semibold text-foreground shadow-sm">
+            {product.category}
+          </span>
+        )}
+      </Link>
+
+      <div className="flex flex-col gap-3 p-4 sm:p-5">
+        <div>
+          <p className="text-base font-medium text-muted-foreground">
+            {product.company || product.designer}
+          </p>
+          <Link
+            href={`/products/${product.id}`}
+            className="mt-1 block text-lg font-semibold leading-snug text-foreground underline-offset-2 hover:text-primary hover:underline sm:text-xl"
+          >
+            {product.name}
+          </Link>
+          <p className="mt-2 text-2xl font-bold text-primary">{formatProductPrice(product)}</p>
+        </div>
+
+        <div className="flex flex-col gap-2 sm:flex-row">
+          <button
+            type="button"
+            onClick={() => openQuickView(product)}
+            className="tap-target flex-1 rounded-md border-2 border-foreground bg-background px-4 py-3.5 text-center text-base font-bold text-foreground hover:bg-secondary"
+          >
+            Quick look
           </button>
+          <Link
+            href={`/products/${product.id}`}
+            className="tap-target flex flex-1 items-center justify-center rounded-md bg-primary px-4 py-3.5 text-center text-base font-bold text-primary-foreground hover:bg-primary/90"
+          >
+            View details
+          </Link>
         </div>
       </div>
-
-      {/* Product Info */}
-      <div className="text-center">
-        <p className="text-xs font-light tracking-widest text-muted-foreground uppercase mb-2">
-          {designer}
-        </p>
-        <h3 className="text-sm font-light tracking-wide text-foreground mb-3 text-balance">
-          {name}
-        </h3>
-        <p className="text-base font-light text-accent">
-          ₹{price.toLocaleString('en-IN')}
-        </p>
-      </div>
-    </div>
+    </article>
   );
 }
