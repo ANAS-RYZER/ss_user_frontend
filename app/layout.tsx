@@ -17,7 +17,7 @@ const lora = Lora({
   display: 'swap',
 })
 
-const siteName = 'SHARNAYA'
+const siteName = 'Manjunatha Hall'
 const siteDescription =
   'Traditional South Indian sarees and ethnic wear for women, men, and children. Shop online with easy sizing and secure delivery across India.'
 
